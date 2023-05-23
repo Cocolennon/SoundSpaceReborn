@@ -1,5 +1,10 @@
 extends Node
 
+func _unhandled_input(event):
+	if event is InputEventKey:
+		if event.pressed and event.keycode == KEY_K:
+			get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+
 func _opentxtfile_pressed():
 	$TextFileDialog.popup_centered(Vector2(get_window().size.x / 2.0, get_window().size.y / 2.0))
 
