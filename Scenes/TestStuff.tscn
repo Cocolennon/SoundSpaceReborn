@@ -1,0 +1,138 @@
+[gd_scene load_steps=8 format=3 uid="uid://cu81va6hri2qa"]
+
+[ext_resource type="Script" path="res://Scripts/FileDialogScript.gd" id="1_gnryx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rah2f"]
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_bnsb6"]
+
+[sub_resource type="Shortcut" id="Shortcut_cxefe"]
+resource_local_to_scene = true
+resource_name = "FileDialog"
+events = [SubResource("InputEventMouseButton_bnsb6")]
+
+[sub_resource type="AudioStream" id="AudioStream_uhcmf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_eomt0"]
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4jyk1"]
+font_size = 50
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 7
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gnryx")
+
+[node name="AudioFileDialogPath" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 40.0
+offset_right = 296.0
+offset_bottom = 85.0
+
+[node name="PathToMP3" type="Label" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 7.0
+offset_right = 211.0
+offset_bottom = 33.0
+text = "Path to MP3 file"
+label_settings = SubResource("LabelSettings_rah2f")
+
+[node name="AudioFileDialogButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 302.0
+offset_top = 41.0
+offset_right = 372.0
+offset_bottom = 85.0
+shortcut = SubResource("Shortcut_cxefe")
+text = "IMPORT"
+
+[node name="AudioFileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.mp3")
+
+[node name="TextFileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+size = Vector2i(312, 157)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.ssrmap")
+
+[node name="TextFileDialogPath" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 137.0
+offset_right = 295.0
+offset_bottom = 182.0
+
+[node name="TextFileDialogButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 301.0
+offset_top = 137.0
+offset_right = 371.0
+offset_bottom = 181.0
+shortcut = SubResource("Shortcut_cxefe")
+text = "IMPORT"
+
+[node name="PathToTXT" type="Label" parent="."]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 100.0
+offset_right = 216.0
+offset_bottom = 126.0
+text = "Path to TXT file"
+label_settings = SubResource("LabelSettings_rah2f")
+
+[node name="Submit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 190.0
+offset_right = 370.0
+offset_bottom = 241.0
+text = "Submit"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStream_uhcmf")
+
+[node name="TextFileLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 248.0
+offset_right = 371.0
+offset_bottom = 453.0
+text = "This will be replaced by the text file's content"
+label_settings = SubResource("LabelSettings_eomt0")
+autowrap_mode = 3
+
+[node name="MSIndicator" type="Label" parent="."]
+layout_mode = 0
+offset_left = 391.0
+offset_top = 34.0
+offset_right = 839.0
+offset_bottom = 217.0
+text = "... ms
+"
+label_settings = SubResource("LabelSettings_4jyk1")
+autowrap_mode = 3
+
+[connection signal="pressed" from="AudioFileDialogButton" to="." method="_on_audio_file_dialog_button_pressed"]
+[connection signal="file_selected" from="AudioFileDialog" to="." method="_on_audio_file_dialog_file_selected"]
+[connection signal="file_selected" from="TextFileDialog" to="." method="_on_text_file_dialog_file_selected"]
+[connection signal="pressed" from="TextFileDialogButton" to="." method="_on_text_file_dialog_button_pressed"]
+[connection signal="pressed" from="Submit" to="." method="_on_button_pressed"]

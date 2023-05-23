@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://dfci5bf1toxfe"]
+
+[ext_resource type="Script" path="res://Scripts/GoToMenu.gd" id="1_6ivkk"]
+[ext_resource type="Texture2D" uid="uid://2duwlc01hjwu" path="res://Textures/MainMenu/title.png" id="1_g8wwo"]
+[ext_resource type="AudioStream" uid="uid://3dqlv8imj42t" path="res://Sounds/nggyu.mp3" id="2_js8do"]
+
+[sub_resource type="Sky" id="Sky_lovjh"]
+
+[sub_resource type="Environment" id="Environment_q1ydj"]
+background_mode = 2
+sky = SubResource("Sky_lovjh")
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 1.29
+reflected_light_source = 2
+
+[node name="MainMenu" type="Node3D"]
+script = ExtResource("1_6ivkk")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_q1ydj")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00621486, -0.00635028, 0.0833011)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Camera3D"]
+stream = ExtResource("2_js8do")
+volume_db = -21.301
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.525762)
+texture = ExtResource("1_g8wwo")
+
+[connection signal="ready" from="Sprite3D" to="." method="_on_sprite_3d_ready"]

@@ -1,0 +1,182 @@
+[gd_scene load_steps=4 format=3 uid="uid://wfu0wedm363m"]
+
+[ext_resource type="Script" path="res://Scripts/menu/ConvertMenu.gd" id="1_sjtr6"]
+
+[sub_resource type="Theme" id="Theme_my6qf"]
+default_font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f1mi6"]
+bg_color = Color(1, 1, 1, 0.180392)
+
+[node name="ConvertMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sjtr6")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0941176, 0.0901961, 0.0901961, 1)
+
+[node name="TextFileDialog" type="FileDialog" parent="."]
+initial_position = 1
+title = "Open a File"
+size = Vector2i(392, 162)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.txt ; Text Files")
+
+[node name="AudioFileDialog" type="FileDialog" parent="."]
+initial_position = 1
+title = "Open a File"
+size = Vector2i(392, 162)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.mp3 ; MP3 Audio File")
+
+[node name="Convert" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 530.0
+offset_right = 150.0
+offset_bottom = 572.0
+grow_horizontal = 2
+theme = SubResource("Theme_my6qf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_f1mi6")
+text = "Convert"
+
+[node name="OpenAudioFile" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 250.0
+offset_right = 150.0
+offset_bottom = 292.0
+grow_horizontal = 2
+theme = SubResource("Theme_my6qf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_f1mi6")
+text = "Open Audio File"
+
+[node name="OpenTXTFile" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 30.0
+offset_right = 150.0
+offset_bottom = 72.0
+grow_horizontal = 2
+theme = SubResource("Theme_my6qf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_f1mi6")
+text = "Open Text File"
+
+[node name="MapTXTData" type="TextEdit" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -147.0
+offset_top = 76.0
+offset_right = 147.0
+offset_bottom = 235.0
+grow_horizontal = 2
+theme_override_colors/background_color = Color(1, 1, 1, 0.0941176)
+placeholder_text = "You can also copy paste the map data in here"
+wrap_mode = 1
+scroll_smooth = true
+
+[node name="ID" type="TextEdit" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -147.0
+offset_top = 420.0
+offset_right = 147.0
+offset_bottom = 460.0
+grow_horizontal = 2
+theme_override_colors/background_color = Color(1, 1, 1, 0.0941176)
+placeholder_text = "Enter the ID"
+wrap_mode = 1
+scroll_smooth = true
+
+[node name="Artist" type="TextEdit" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -147.0
+offset_top = 375.0
+offset_right = 147.0
+offset_bottom = 415.0
+grow_horizontal = 2
+theme_override_colors/background_color = Color(1, 1, 1, 0.0941176)
+placeholder_text = "Enter the artist"
+wrap_mode = 1
+scroll_smooth = true
+
+[node name="MapName" type="TextEdit" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -147.0
+offset_top = 330.0
+offset_right = 147.0
+offset_bottom = 370.0
+grow_horizontal = 2
+theme_override_colors/background_color = Color(1, 1, 1, 0.0941176)
+placeholder_text = "Enter the map's name"
+wrap_mode = 1
+scroll_smooth = true
+
+[node name="AudioPath" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -24.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Select an audio file"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mapper" type="TextEdit" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -147.0
+offset_top = 465.0
+offset_right = 147.0
+offset_bottom = 505.0
+grow_horizontal = 2
+theme_override_colors/background_color = Color(1, 1, 1, 0.0941176)
+placeholder_text = "Enter the mapper"
+wrap_mode = 1
+scroll_smooth = true
+
+[connection signal="file_selected" from="TextFileDialog" to="." method="on_txtfiledialog_selected"]
+[connection signal="file_selected" from="AudioFileDialog" to="." method="_on_audiofiledialog_selected"]
+[connection signal="pressed" from="Convert" to="." method="_convert_pressed"]
+[connection signal="pressed" from="OpenAudioFile" to="." method="_openaudiofile_pressed"]
+[connection signal="pressed" from="OpenTXTFile" to="." method="_opentxtfile_pressed"]
