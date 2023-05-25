@@ -72,3 +72,14 @@ func get_audio_format(buffer:PackedByteArray):
 	or buffer.slice(0,3) == PackedByteArray([0x49,0x44,0x33])): return AudioFormat.MP3
 
 	return AudioFormat.UNKNOWN
+
+func ms_to_min_sec_str(ms):
+	var mins = int(float(ms) * 0.001) / 60
+	var secs = int(float(ms) * 0.001) % 60
+	return str(mins) + ":" + ("%02d" % secs)
+
+func get_map_len_str(map):
+	var map_len = "err:err"
+	if len(map.notes.default) > 0:
+		map_len = SSR.ms_to_min_sec_str(map.notes.default[-1].ms)
+	return map_len

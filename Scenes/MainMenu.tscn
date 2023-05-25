@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dfci5bf1toxfe"]
+[gd_scene load_steps=10 format=3 uid="uid://dfci5bf1toxfe"]
 
 [ext_resource type="Script" path="res://Scripts/GoToMenu.gd" id="1_6ivkk"]
 [ext_resource type="Texture2D" uid="uid://2duwlc01hjwu" path="res://Textures/MainMenu/title.png" id="1_g8wwo"]
 [ext_resource type="AudioStream" uid="uid://3dqlv8imj42t" path="res://Sounds/nggyu.mp3" id="2_js8do"]
 [ext_resource type="Script" path="res://Scripts/menu/MainHUD.gd" id="4_73if0"]
+[ext_resource type="Script" path="res://Scripts/buttons/Map.gd" id="5_mhy7q"]
 
 [sub_resource type="Sky" id="Sky_lovjh"]
 
@@ -30,7 +31,7 @@ script = ExtResource("1_6ivkk")
 skeleton = NodePath("../..")
 
 [node name="GameTitle" type="Sprite3D" parent="Node3D"]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -0.111867, 0.0166402, -0.188108)
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -0.120013, 0.00173372, -0.188108)
 texture = ExtResource("1_g8wwo")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node3D"]
@@ -62,17 +63,17 @@ color = Color(0.313726, 0.313726, 0.313726, 0)
 
 [node name="MapList" type="Control" parent="HUDMenu"]
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 39.0
-offset_top = -608.0
-offset_right = 559.0
-offset_bottom = -48.0
+anchor_bottom = 0.5
+offset_left = 24.0
+offset_top = -280.0
+offset_right = 544.0
+offset_bottom = 280.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 
 [node name="UIBackground" type="ColorRect" parent="HUDMenu/MapList"]
 layout_mode = 1
@@ -115,6 +116,7 @@ custom_minimum_size = Vector2(0, 170)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("5_mhy7q")
 
 [node name="Title" type="Label" parent="HUDMenu/MapList/MapListBackground/MapScroller/MapGrid/Map_"]
 layout_mode = 1
@@ -132,7 +134,7 @@ vertical_alignment = 1
 autowrap_mode = 3
 clip_text = true
 
-[node name="Length2" type="Label" parent="HUDMenu/MapList/MapListBackground/MapScroller/MapGrid/Map_"]
+[node name="Mapper" type="Label" parent="HUDMenu/MapList/MapListBackground/MapScroller/MapGrid/Map_"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -177,15 +179,33 @@ text = "Reload"
 
 [node name="ImportSSPMaps" type="Button" parent="HUDMenu"]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
+anchor_bottom = 0.5
 offset_left = -396.0
-offset_top = 544.0
+offset_top = 221.0
 offset_right = 4.0
-offset_bottom = 604.0
+offset_bottom = 281.0
 grow_horizontal = 2
+grow_vertical = 2
 text = "Import Sound Space Plus Maps"
+
+[node name="Search" type="TextEdit" parent="HUDMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -396.0
+offset_top = -279.0
+offset_right = 4.0
+offset_bottom = -239.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Search"
 
 [node name="SSPDirectoryDialog" type="FileDialog" parent="HUDMenu"]
 title = "Open your Sound Space Plus user folder"
@@ -194,6 +214,24 @@ file_mode = 2
 access = 2
 filters = PackedStringArray("SoundSpacePlus ; Sound Space Plus")
 
+[node name="Play" type="Button" parent="HUDMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -516.0
+offset_top = 221.0
+offset_right = -416.0
+offset_bottom = 281.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PLAY"
+
+[connection signal="map_selected" from="HUDMenu/MapList/MapListBackground/MapScroller/MapGrid/Map_" to="HUDMenu" method="_on_map__map_selected"]
+[connection signal="pressed" from="HUDMenu/MapList/MapListBackground/MapScroller/MapGrid/Map_" to="HUDMenu/MapList/MapListBackground/MapScroller/MapGrid/Map_" method="_on_pressed"]
 [connection signal="pressed" from="HUDMenu/MapList/Reload" to="HUDMenu" method="_on_reload_pressed"]
 [connection signal="pressed" from="HUDMenu/ImportSSPMaps" to="HUDMenu" method="_on_import_ssp_maps_pressed"]
 [connection signal="dir_selected" from="HUDMenu/SSPDirectoryDialog" to="HUDMenu" method="_on_ssp_directory_dialog_dir_selected"]
+[connection signal="pressed" from="HUDMenu/Play" to="HUDMenu" method="_on_play_pressed"]
