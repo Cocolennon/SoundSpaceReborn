@@ -1,27 +1,108 @@
 extends Node
-const data_separator = "Ξζξ"
-const note_separator = "ξζΞ"
+const separator = "COOLSEPARATOR"
+const separators = {
+	"v0": "Ξζξ",
+	"v1": "COOLSEPARATOR"
+	#"v1": "♫╫⌂ΞΠϢ",
+}
 
-func convert_txt_audio(txt_data, audio_path, title, artist, mapper, id):
+var audio_stream: AudioStream
+var map_meta = {}
+var notes = {}
+var map_data = {}
+
+func load_from_path(path):
+	var map_file = FileAccess.get_file_as_string("user://maps/%s" % path)
+	var map_file_data = map_file.substr(1).split(separator)
+	var file = FileAccess.open("user://maps/%s" % path, FileAccess.READ)
+	
+	var version = file.get_8()
+	if version != 1:
+		push_error("Map isn't using latest version, not loading")
+		return
+	file.close()
+	var file_bytes = FileAccess.get_file_as_bytes("user://maps/%s" % path)
+	
+	map_data = JSON.parse_string(map_file_data[0])
+	notes = JSON.parse_string(map_file_data[1])
+	
+#	notes = {}
+#	var all_notes = map_file_data[1].split(separators["notes"].v1)
+#	var note_index = 0
+#	for i in all_notes:
+#		notes[note_index] = i
+#		note_index += 1
+	
+	var audio_bytes = file_bytes.slice(get_start_of_audio_buffer(map_file))
+	#print(audio_bytes)
+	var format = SSR.get_audio_format(audio_bytes)
+	print(format)
+	match format:
+		SSR.AudioFormat.WAV:
+			print("Map %s has a WAVE Audio File" % path)
+			print("Maps with WAVE Audio Files are not supported yet.")
+			return
+#			audio_stream = AudioStreamWAV.new()
+#			audio_stream.data = audio_bytes
+		SSR.AudioFormat.OGG:
+			print("Map %s has an OGG Audio File" % path)
+			audio_stream = AudioStreamOggVorbis.new()
+			audio_stream.packet_sequence = SSR.get_ogg_packet_sequence(audio_bytes)
+		SSR.AudioFormat.MP3:
+			print("Map %s has a MP3 Audio File" % path)
+			audio_stream = AudioStreamMP3.new()
+			audio_stream.data = audio_bytes
+		_:
+			print("File: %s, Invalid format. Magic: %s" % [path, audio_bytes.slice(0,3)])
+			return
+	
+	map_data = {
+		"map_data": map_data,
+		"notes": notes,
+		"audio_stream": audio_stream,
+	}
+	SSR.maps.append(map_data)
+	SSR.current_map = map_data
+
+func convert_txt_audio(txt_data, audio_path, songname, artist, mapper, id):
 	var output = FileAccess.open("user://maps/%s.ssrmap" % id, FileAccess.WRITE)
-	#output.store_8(1)
+	output.store_8(1)
 	
-	var meta_ = {}
-	meta_["name"] = title
-	meta_["artist"] = artist
-	meta_["mapper"] = mapper
-	meta_["id"] = id
-	output.store_string(JSON.stringify(meta_))
+	var map_metadata = {}
+	map_metadata["name"] = songname
+	map_metadata["artist"] = artist
+	map_metadata["mapper"] = mapper
+	map_metadata["id"] = id
+	output.store_string(JSON.stringify(map_metadata))
 	
-	output.store_string(data_separator)
+	output.store_string(separator)
+	
+	var notes_ = {}
+	notes_["default"] = []
 	
 	for i in txt_data.split(",").slice(1):
 		var note_data = i.replace("\r", "").replace("\n", "").split("|")
-		var current_note = {"ms": int(note_data[2]), "x": float(note_data[0]), "y": float(note_data[1])}
-		output.store_string(JSON.stringify(current_note))
-		output.store_string(note_separator)
+		notes_["default"].append({
+			"x": float(note_data[0]),
+			"y": float(note_data[1]),
+			"ms": int(note_data[2]),
+		})
+	output.store_string(JSON.stringify(notes_))
 	
-	output.store_string(data_separator)
+#	for i in txt_data.split(",").slice(1):
+#		var note_data = i.replace("\r", "").replace("\n", "").split("|")
+#		var current_note = {"ms": int(note_data[2]), "x": float(note_data[0]), "y": float(note_data[1])}
+#		output.store_string(JSON.stringify(current_note))
+#		output.store_string(separators["notes"].v1)
+	
+	output.store_string(separator)
 	
 	var audio_bytes = FileAccess.get_file_as_bytes(audio_path)
 	output.store_buffer(audio_bytes)
+
+func get_start_of_audio_buffer(f_txt: String):
+	var audio_bytes_ = f_txt.split(separator)
+	var a = f_txt.find(separator)
+	var b = f_txt.find(separator, a + 1)
+	var c = f_txt.find(separator, b + 1)
+	return b + 13

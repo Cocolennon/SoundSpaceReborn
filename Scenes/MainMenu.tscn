@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dfci5bf1toxfe"]
+[gd_scene load_steps=8 format=3 uid="uid://dfci5bf1toxfe"]
 
 [ext_resource type="Script" path="res://Scripts/GoToMenu.gd" id="1_6ivkk"]
 [ext_resource type="Texture2D" uid="uid://2duwlc01hjwu" path="res://Textures/MainMenu/title.png" id="1_g8wwo"]
@@ -13,21 +13,332 @@ ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_energy = 1.29
 reflected_light_source = 2
 
-[node name="MainMenu" type="Node3D"]
+[sub_resource type="LabelSettings" id="LabelSettings_kl2ey"]
+line_spacing = 1.0
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_2e5u5"]
+font_size = 15
+
+[node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_6ivkk")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_q1ydj")
+[node name="Node3D" type="Node3D" parent="."]
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00621486, -0.00635028, 0.0833011)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+skeleton = NodePath("../..")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Camera3D"]
+[node name="GameTitle" type="Sprite3D" parent="Node3D"]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -0.111867, 0.0166402, -0.188108)
+texture = ExtResource("1_g8wwo")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node3D"]
 stream = ExtResource("2_js8do")
 volume_db = -21.301
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.525762)
-texture = ExtResource("1_g8wwo")
+[node name="Camera3D" type="Camera3D" parent="Node3D"]
 
-[connection signal="ready" from="Sprite3D" to="." method="_on_sprite_3d_ready"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Node3D"]
+environment = SubResource("Environment_q1ydj")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HUDBackground" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.313726, 0.313726, 0.313726, 0)
+
+[node name="Control" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 39.0
+offset_top = -608.0
+offset_right = 559.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="UIBackground" type="ColorRect" parent="Control/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.313726, 0.313726, 0.313726, 1)
+
+[node name="MapListBackground" type="ColorRect" parent="Control/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 45.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.309804)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/Control/MapListBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="Control/Control/MapListBackground/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button2" type="Button" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button2"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_right = 250.0
+offset_bottom = 80.0
+grow_horizontal = 2
+text = "One Random Song - By A Random Artist (Some Random Remix) (Language Cover)"
+label_settings = SubResource("LabelSettings_kl2ey")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Length2" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button2"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -75.0
+offset_right = 260.0
+grow_vertical = 0
+text = "Length:
+99:99"
+label_settings = SubResource("LabelSettings_2e5u5")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Length" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button2"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -75.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Mapper:
+Some really long username"
+label_settings = SubResource("LabelSettings_2e5u5")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Button3" type="Button" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button3"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_right = 250.0
+offset_bottom = 80.0
+grow_horizontal = 2
+text = "One Random Song - By A Random Artist (Some Random Remix) (Language Cover)"
+label_settings = SubResource("LabelSettings_kl2ey")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Length2" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button3"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -75.0
+offset_right = 260.0
+grow_vertical = 0
+text = "Length:
+99:99"
+label_settings = SubResource("LabelSettings_2e5u5")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Length" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button3"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -75.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Mapper:
+Some really long username"
+label_settings = SubResource("LabelSettings_2e5u5")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Button4" type="Button" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button4"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_right = 250.0
+offset_bottom = 80.0
+grow_horizontal = 2
+text = "One Random Song - By A Random Artist (Some Random Remix) (Language Cover)"
+label_settings = SubResource("LabelSettings_kl2ey")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Length2" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button4"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -75.0
+offset_right = 260.0
+grow_vertical = 0
+text = "Length:
+99:99"
+label_settings = SubResource("LabelSettings_2e5u5")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Length" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button4"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -75.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Mapper:
+Some really long username"
+label_settings = SubResource("LabelSettings_2e5u5")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Button5" type="Button" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button5"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_right = 250.0
+offset_bottom = 80.0
+grow_horizontal = 2
+text = "One Random Song - By A Random Artist (Some Random Remix) (Language Cover)"
+label_settings = SubResource("LabelSettings_kl2ey")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Length2" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button5"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -75.0
+offset_right = 260.0
+grow_vertical = 0
+text = "Length:
+99:99"
+label_settings = SubResource("LabelSettings_2e5u5")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Length" type="Label" parent="Control/Control/MapListBackground/ScrollContainer/GridContainer/Button5"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -75.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Mapper:
+Some really long username"
+label_settings = SubResource("LabelSettings_2e5u5")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="Button" type="Button" parent="Control/Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 45.0
+grow_horizontal = 2
+text = "Reload"
