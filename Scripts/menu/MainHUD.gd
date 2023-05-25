@@ -6,13 +6,22 @@ var selected_map = {}
 func _ready():
 	map_list()
 
+var show:bool = false
 func _process(_d):
 	for child in $MapList/MapListBackground/MapScroller/MapGrid.get_children():
 		if child.name.begins_with("Map_"):
-			child.visible = true
-
-func _on_import_ssp_maps_pressed():
-	$SSPDirectoryDialog.popup_centered(Vector2(get_window().size.x / 2.0, get_window().size.y / 1.25))
+			for i in child.get_children():
+				if i.name.begins_with("Title"):
+					if i.text.findn($Search.text) != -1:
+						show = true
+			if $Search.text == "":
+				child.visible = true
+			else:
+				if show:
+					child.visible = true
+					show = false
+				else:
+					child.visible = false
 
 func _on_ssp_directory_dialog_dir_selected(dir):
 	var sspmapsdir = DirAccess.open(dir + "/maps")
