@@ -1,15 +1,21 @@
 extends Node
 const separator = "COOLSEPARATOR"
-const separators = {
-	"v0": "Ξζξ",
-	"v1": "COOLSEPARATOR"
-	#"v1": "♫╫⌂ΞΠϢ",
-}
 
 var audio_stream: AudioStream
 var map_meta = {}
 var notes = {}
 var map_data = {}
+
+func sspm_to_ssrmap(sspm, combined_map_data):
+	var file = FileAccess.open("user://maps/%s.ssrmap" % combined_map_data.map_metadata.id, FileAccess.WRITE)
+	print("Converting: %s" % sspm)
+	file.store_8(1)
+	file.store_string(JSON.stringify(combined_map_data.map_metadata))
+	file.store_string(separator)
+	file.store_string(JSON.stringify(combined_map_data.notes))
+	file.store_string(separator)
+	file.store_buffer(combined_map_data.audio_buffer)
+	DirAccess.remove_absolute("user://maps/%s" % sspm)
 
 func load_from_path(path):
 	var map_file = FileAccess.get_file_as_string("user://maps/%s" % path)
@@ -26,15 +32,7 @@ func load_from_path(path):
 	map_data = JSON.parse_string(map_file_data[0])
 	notes = JSON.parse_string(map_file_data[1])
 	
-#	notes = {}
-#	var all_notes = map_file_data[1].split(separators["notes"].v1)
-#	var note_index = 0
-#	for i in all_notes:
-#		notes[note_index] = i
-#		note_index += 1
-	
 	var audio_bytes = file_bytes.slice(get_start_of_audio_buffer(map_file))
-	#print(audio_bytes)
 	var format = SSR.get_audio_format(audio_bytes)
 	print(format)
 	match format:
@@ -62,7 +60,6 @@ func load_from_path(path):
 		"audio_stream": audio_stream,
 	}
 	SSR.maps.append(map_data)
-	SSR.current_map = map_data
 
 func convert_txt_audio(txt_data, audio_path, songname, artist, mapper, id):
 	var output = FileAccess.open("user://maps/%s.ssrmap" % id, FileAccess.WRITE)
@@ -89,20 +86,12 @@ func convert_txt_audio(txt_data, audio_path, songname, artist, mapper, id):
 		})
 	output.store_string(JSON.stringify(notes_))
 	
-#	for i in txt_data.split(",").slice(1):
-#		var note_data = i.replace("\r", "").replace("\n", "").split("|")
-#		var current_note = {"ms": int(note_data[2]), "x": float(note_data[0]), "y": float(note_data[1])}
-#		output.store_string(JSON.stringify(current_note))
-#		output.store_string(separators["notes"].v1)
-	
 	output.store_string(separator)
 	
 	var audio_bytes = FileAccess.get_file_as_bytes(audio_path)
 	output.store_buffer(audio_bytes)
 
 func get_start_of_audio_buffer(f_txt: String):
-	var audio_bytes_ = f_txt.split(separator)
 	var a = f_txt.find(separator)
 	var b = f_txt.find(separator, a + 1)
-	var c = f_txt.find(separator, b + 1)
 	return b + 13

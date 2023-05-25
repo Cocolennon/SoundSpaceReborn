@@ -13,6 +13,7 @@ config_version=5
 config/name="Sound Space Reborn"
 run/main_scene="res://Scenes/Loading.tscn"
 config/use_custom_user_dir=true
+config/custom_user_dir_name="SoundSpaceReborn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.png"
 config/windows_native_icon="res://icon.ico"
@@ -22,6 +23,7 @@ config/windows_native_icon="res://icon.ico"
 SSR="*res://SoundSpaceReborn.gd"
 SSRMap="*res://Scripts/io/SSRMap.gd"
 TimeManager="*res://Scripts/game/managers/TimeManager.gd"
+SSPMConversion="*res://Scripts/io/SSPMConversion.gd"
 
 [dotnet]
 
