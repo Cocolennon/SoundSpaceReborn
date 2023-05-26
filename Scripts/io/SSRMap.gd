@@ -17,6 +17,17 @@ func sspm_to_ssrmap(sspm, combined_map_data):
 	file.store_buffer(combined_map_data.audio_buffer)
 	DirAccess.remove_absolute("user://maps/%s" % sspm)
 
+func flux_to_ssrmap(flux, combined_map_data):
+	var file = FileAccess.open("user://maps/%s.ssrmap" % combined_map_data.map_data.id, FileAccess.WRITE)
+	print ("Converting: %s" % combined_map_data.map_data.id)
+	file.store_8(1)
+	file.store_string(JSON.stringify(combined_map_data.map_data))
+	file.store_string(separator)
+	file.store_string(JSON.stringify(combined_map_data.notes))
+	file.store_string(separator)
+	file.store_buffer(combined_map_data.audio_buffer)
+	DirAccess.remove_absolute("user://maps/%s.flux" % combined_map_data.map_data.id)
+
 func load_from_path(path):
 	var map_file = FileAccess.get_file_as_string("user://maps/%s" % path)
 	var map_file_data = map_file.substr(1).split(separator)

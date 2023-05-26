@@ -24,10 +24,7 @@ SSR="*res://SoundSpaceReborn.gd"
 SSRMap="*res://Scripts/io/SSRMap.gd"
 TimeManager="*res://Scripts/game/managers/TimeManager.gd"
 SSPMConversion="*res://Scripts/io/SSPMConversion.gd"
-
-[display]
-
-window/size/mode=3
+FluxConversion="*res://Scripts/io/FluxConversion.gd"
 
 [dotnet]
 

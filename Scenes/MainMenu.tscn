@@ -193,7 +193,7 @@ grow_vertical = 2
 placeholder_text = "Search"
 
 [node name="SSPDirectoryDialog" type="FileDialog" parent="HUDMenu"]
-title = "Open your Sound Space Plus user folder"
+title = "Open a Directory"
 ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
